@@ -5,7 +5,7 @@
 
 
 every 2.minutes do
-  rake 'hello_world', :environment => "development"
+  rake 'create_day', :environment => "development"
 end
 
 # Example:

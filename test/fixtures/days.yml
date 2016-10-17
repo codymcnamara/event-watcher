@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2016-10-16 21:22:04
+  listing_count: 1
+  average_price: 1
+  lowest_price: 1
+  highest_price: 1
+
+two:
+  date: 2016-10-16 21:22:04
+  listing_count: 1
+  average_price: 1
+  lowest_price: 1
+  highest_price: 1
