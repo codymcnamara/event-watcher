@@ -11,5 +11,5 @@ task hit_seatgeek_api: :environment do
   raw_body = Net::HTTP.get_response(uri).body
   response = JSON.parse(raw_body)
 
-  puts response['stats']
+  p response['archived']
 end

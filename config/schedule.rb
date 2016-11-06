@@ -5,7 +5,7 @@
 
 
 every 2.minutes do
-  rake 'create_day', :environment => "development"
+  rake 'track_price_changes', :environment => "development"
 end
 
 # Example:
