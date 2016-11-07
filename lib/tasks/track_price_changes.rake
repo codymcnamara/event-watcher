@@ -2,7 +2,7 @@ desc 'create a day objects for each event'
 
 task track_price_changes: :environment do
 
-  Event.where(completed: false).each do |event|
+  Event.where(finished: false).each do |event|
 
     url = "https://api.seatgeek.com/2/events/#{event.seatgeek_id}?client_id=NjEzOTI5MnwxNDc4MzkzNzA0"
     uri =  URI.parse(url)
@@ -10,7 +10,7 @@ task track_price_changes: :environment do
     response = JSON.parse(raw_body)
 
     if response['archived']
-      event.update(completed: true)
+      event.update(finished: true)
       next
     end
 
