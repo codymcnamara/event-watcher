@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107061611) do
+ActiveRecord::Schema.define(version: 20161107072557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,15 +24,19 @@ ActiveRecord::Schema.define(version: 20161107061611) do
     t.integer  "highest_price", null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.integer  "event_id"
   end
+
+  add_index "days", ["event_id"], name: "index_days_on_event_id", using: :btree
 
   create_table "events", force: true do |t|
-    t.string   "title",      null: false
+    t.string   "title",       null: false
     t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.boolean  "finished"
-    t.string   "url"
+    t.string   "seatgeek_id"
   end
 
+  add_foreign_key "days", "events"
 end
