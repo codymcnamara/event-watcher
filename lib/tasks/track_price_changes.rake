@@ -16,7 +16,10 @@ task track_price_changes: :environment do
 
     Day.create(
       event_id: event.id,
-      listing_count: response['stats']['listing_count'], average_price: response['stats']['average_price'], lowest_price: response['stats']['lowest_price'], highest_price: response['stats']['highest_price'],
+      listing_count: response['stats']['listing_count'],
+      average_price: response['stats']['average_price'],
+      lowest_price: response['stats']['lowest_price'],
+      highest_price: response['stats']['highest_price']
     )
 
   end
