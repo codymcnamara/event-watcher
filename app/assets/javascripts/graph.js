@@ -15,16 +15,16 @@ graphFunctions = {
         WIDTH = 1000,
         HEIGHT = 500,
         MARGINS = {
-          top: 20,
-          right: 20,
+          top: 50,
+          right: 50,
           bottom: 50,
           left: 50
         },
         xRange = d3.scaleTime()
           .range([MARGINS.left, WIDTH - MARGINS.right])
           .domain([
-            new Date( Date.parse(lineData[0]) ),
-            new Date( Date.parse(lineData[lineData.length - 1]) )
+            new Date( Date.parse(lineData[0].date) ),
+            new Date( Date.parse(lineData[lineData.length - 1].date) )
           ]),
         yRange = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(lineData, function(d) {
           return d.lowest_price;
@@ -32,8 +32,9 @@ graphFunctions = {
           return d.lowest_price;
         })]),
         xAxis = d3.axisBottom(xRange)
-          .ticks( Math.round((lineData.length - 1)/2) ),
-          // .tickSize(5)
+          .ticks( Math.round((lineData.length - 1)) )
+          .tickFormat(d3.timeFormat("%b-%d"));
+          // .tickSize(5);
           // .tickSubdivide(true),
         yAxis = d3.axisLeft()
           .scale(yRange)
