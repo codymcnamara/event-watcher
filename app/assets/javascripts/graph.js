@@ -34,8 +34,6 @@ graphFunctions = {
         xAxis = d3.axisBottom(xRange)
           .ticks( Math.round((lineData.length - 1)) )
           .tickFormat(d3.timeFormat("%b-%d"));
-          // .tickSize(5);
-          // .tickSubdivide(true),
         yAxis = d3.axisLeft()
           .scale(yRange)
           .tickSize(5);
@@ -49,7 +47,24 @@ graphFunctions = {
       .attr('class', 'y axis')
       .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
       .call(yAxis);
+
+      // data points
+      var lineGen = d3.line()
+        .x(function(d) {
+          return xRange(new Date (Date.parse(d.date) ) );
+        })
+        .y(function(d) {
+          return yRange(d.lowest_price);
+        });
+
+      vis.append('svg:path')
+        .attr('d', lineGen(lineData))
+        .attr('stroke', 'green')
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
+
   }
+
 
 }
 
