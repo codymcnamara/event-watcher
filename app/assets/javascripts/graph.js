@@ -1,106 +1,75 @@
 
 graphFunctions = {
   allData: {},
-  currentData: [],
-
+  WIDTH: 1000,
+  HEIGHT: 500,
+  MARGINS: {
+    top: 50,
+    right: 50,
+    bottom: 50,
+    left: 50
+  },
 
   init: function () {
     $.ajax({
       url: window.location.pathname + '.json',
       type: 'GET',
       success: function (data) {
-        graphFunctions.createGraph(data);
         graphFunctions.allData = data;
+        graphFunctions.createGraph();
       }
     })
   },
 
-  createGraph: function (lineData) {
+  createGraph: function () {
     var vis = d3.select('#graph'),
-        WIDTH = 1000,
-        HEIGHT = 500,
-        MARGINS = {
-          top: 50,
-          right: 50,
-          bottom: 50,
-          left: 50
-        },
         xRange = d3.scaleTime()
-          .range([MARGINS.left, WIDTH - MARGINS.right])
+          .range([graphFunctions.MARGINS.left, graphFunctions.WIDTH - graphFunctions.MARGINS.right])
           .domain([
-            new Date( Date.parse(lineData[0].date) ),
-            new Date( Date.parse(lineData[lineData.length - 1].date) )
+            new Date( Date.parse(graphFunctions.allData[0].date) ),
+            new Date( Date.parse(graphFunctions.allData[graphFunctions.allData.length - 1].date) )
           ]),
-        yRange = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(lineData, function(d) {
-          return d.lowest_price;
-        }), d3.max(lineData, function(d) {
-          return d.lowest_price;
-        })]),
         xAxis = d3.axisBottom(xRange)
-          .ticks( Math.round((lineData.length - 1)) )
+          .ticks( Math.round((graphFunctions.allData.length - 1)) )
           .tickFormat(d3.timeFormat("%b-%d"));
-        yAxis = d3.axisLeft()
-          .scale(yRange)
-          .tickSize(5);
 
     vis.append('svg:g')
       .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
+      .attr('transform', 'translate(0,' + (graphFunctions.HEIGHT - graphFunctions.MARGINS.bottom) + ')')
       .call(xAxis);
 
-    vis.append('svg:g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
-      .call(yAxis);
+      var yRange = graphFunctions.getYrange();
+      graphFunctions.drawYaxis(yRange);
 
       // data points
       var lineGen = d3.line()
         .x(function(d) {
           return xRange(new Date (Date.parse(d.date) ) );
         })
-        .y(function(d, price_type) {
+        .y(function(d) {
           return yRange(d.lowest_price);
         });
 
       vis.append('svg:path')
-        .attr('d', lineGen(lineData, 'low'))
+        .attr('d', lineGen(graphFunctions.allData))
         .attr('stroke', 'green')
         .attr('stroke-width', 2)
         .attr('fill', 'none');
   },
 
-  changeData: function (event) {
-    // remove curent lines
-    // look at which checkboxes are selected
-    // paint each line for each price type selected
-
-
-    graphFunctions.currentData = [];
+  getYrange: function() {
+    var priceTypes = [];
 
     $('.graph_options input').each(function (index, input) {
       if(input.checked){
-        graphFunctions.currentData.push(input.value);
+        priceTypes.push(input.value);
       }
     })
 
-    // if(event.target.checked){
-    //   var priceType = event.target.value;
-
-    // var vis = d3.select('#graph')
-    var WIDTH = 1000,
-    HEIGHT = 500,
-    MARGINS = {
-      top: 50,
-      right: 50,
-      bottom: 50,
-      left: 50
-    };
-    // get new domain
-    var yRange = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(graphFunctions.allData, function(d) {
-      // min of
+    var yRange = d3.scaleLinear().range([graphFunctions.HEIGHT - graphFunctions.MARGINS.top, graphFunctions.MARGINS.bottom]).domain([d3.min(graphFunctions.allData, function(d) {
       minVals = [];
-      graphFunctions.currentData.forEach(function (priceType) {
-        minVals.push(d[priceType]);
+      priceTypes.forEach(function (priceOption) {
+        minVals.push(d[priceOption]);
       })
 
       var min = Math.min(...minVals);
@@ -108,14 +77,22 @@ graphFunctions = {
       return min;
     }), d3.max(graphFunctions.allData, function(d) {
       maxVals = [];
-      graphFunctions.currentData.forEach(function (priceType) {
-        maxVals.push(d[priceType]);
+      priceTypes.forEach(function (priceOption) {
+        maxVals.push(d[priceOption]);
       })
 
       var max = Math.max(...maxVals);
 
       return max;
     })]);
+
+    return yRange;
+  },
+
+  drawYaxis: function (yRange) {
+    // remove curent lines
+    // look at which checkboxes are selected
+    // paint each line for each price type selected
 
     vis = d3.select('#graph');
 
@@ -127,10 +104,13 @@ graphFunctions = {
 
     vis.append('svg:g')
       .attr('class', 'y axis')
-      .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
+      .attr('transform', 'translate(' + (graphFunctions.MARGINS.left) + ',0)')
       .call(yAxis);
+  },
 
-
+  createYaxis: function () {
+    var yRange = graphFunctions.getYrange();
+    graphFunctions.drawYaxis(yRange);
   }
 
 }
@@ -140,7 +120,7 @@ $(document).ready(function() {
   graphFunctions.init();
 
   $(document).on('click', '.graph_options input', function (e) {
-    graphFunctions.changeData(e);
-  })
+    graphFunctions.createYaxis();
+  });
 
 })
