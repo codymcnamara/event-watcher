@@ -22,16 +22,18 @@ graphFunctions = {
   },
 
   createGraph: function () {
-    var vis = d3.select('#graph'),
-        xRange = d3.scaleTime()
-          .range([graphFunctions.MARGINS.left, graphFunctions.WIDTH - graphFunctions.MARGINS.right])
-          .domain([
-            new Date( Date.parse(graphFunctions.allData[0].date) ),
-            new Date( Date.parse(graphFunctions.allData[graphFunctions.allData.length - 1].date) )
-          ]),
-        xAxis = d3.axisBottom(xRange)
-          .ticks( Math.round((graphFunctions.allData.length - 1)) )
-          .tickFormat(d3.timeFormat("%b-%d"));
+    var vis = d3.select('#graph');
+
+    graphFunctions.xRange = d3.scaleTime()
+      .range([graphFunctions.MARGINS.left, graphFunctions.WIDTH - graphFunctions.MARGINS.right])
+      .domain([
+        new Date( Date.parse(graphFunctions.allData[0].date) ),
+        new Date( Date.parse(graphFunctions.allData[graphFunctions.allData.length - 1].date) )
+      ])
+
+    var xAxis = d3.axisBottom(graphFunctions.xRange)
+      .ticks( Math.round((graphFunctions.allData.length - 1)) )
+      .tickFormat(d3.timeFormat("%b-%d"));
 
     vis.append('svg:g')
       .attr('class', 'x axis')
@@ -44,17 +46,19 @@ graphFunctions = {
       // data points
       var lineGen = d3.line()
         .x(function(d) {
-          return xRange(new Date (Date.parse(d.date) ) );
+          return graphFunctions.xRange(new Date (Date.parse(d.date) ) );
         })
         .y(function(d) {
           return yRange(d.lowest_price);
         });
 
       vis.append('svg:path')
+        .attr('class', 'line')
         .attr('d', lineGen(graphFunctions.allData))
         .attr('stroke', 'green')
         .attr('stroke-width', 2)
         .attr('fill', 'none');
+
   },
 
   getYrange: function() {
@@ -111,6 +115,47 @@ graphFunctions = {
   createYaxis: function () {
     var yRange = graphFunctions.getYrange();
     graphFunctions.drawYaxis(yRange);
+  },
+
+  createLines: function () {
+    var lineColor;
+    var priceTypes = [];
+
+    vis.selectAll(".line").remove();
+
+    $('.graph_options input').each(function (index, input) {
+      if(input.checked){
+        priceTypes.push(input.value);
+      }
+    })
+
+    var yRange = graphFunctions.getYrange();
+
+    priceTypes.forEach(function (priceOption) {
+      var lineGen = d3.line()
+        .x(function(d) {
+          return graphFunctions.xRange(new Date (Date.parse(d.date) ) );
+        })
+        .y(function(d) {
+          return yRange(d[priceOption]);
+        });
+
+        if(priceOption == 'lowest_price'){
+          lineColor = 'green';
+        } else if (priceOption == 'highest_price') {
+          lineColor = 'blue';
+        } else {
+          lineColor = 'red';
+        }
+
+      vis.append('svg:path')
+        .attr('class', 'line')
+        .attr('d', lineGen(graphFunctions.allData))
+        .attr('stroke', lineColor)
+        .attr('stroke-width', 2)
+        .attr('fill', 'none');
+    })
+
   }
 
 }
@@ -119,8 +164,9 @@ graphFunctions = {
 $(document).ready(function() {
   graphFunctions.init();
 
-  $(document).on('click', '.graph_options input', function (e) {
+  $(document).on('click', '.graph_options input', function () {
     graphFunctions.createYaxis();
+    graphFunctions.createLines();
   });
 
 })
