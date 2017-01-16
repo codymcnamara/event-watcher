@@ -40,42 +40,15 @@ graphFunctions = {
       .attr('transform', 'translate(0,' + (graphFunctions.HEIGHT - graphFunctions.MARGINS.bottom) + ')')
       .call(xAxis);
 
-      var yRange = graphFunctions.getYrange();
-      graphFunctions.drawYaxis(yRange);
-
-      // data points
-      var lineGen = d3.line()
-        .x(function(d) {
-          return graphFunctions.xRange(new Date (Date.parse(d.date) ) );
-        })
-        .y(function(d) {
-          return yRange(d.lowest_price);
-        });
-
-      vis.append('svg:path')
-        .attr('class', 'line')
-        .attr('d', lineGen(graphFunctions.allData))
-        .attr('stroke', 'green')
-        .attr('stroke-width', 2)
-        .attr('fill', 'none');
-
+      graphFunctions.updateGraph();
   },
 
-  getYrange: function() {
-    var priceTypes = [];
-
-    $('.graph_options input').each(function (index, input) {
-      if(input.checked){
-        priceTypes.push(input.value);
-      }
-    })
-
+  getYrange: function(priceTypes) {
     var yRange = d3.scaleLinear().range([graphFunctions.HEIGHT - graphFunctions.MARGINS.top, graphFunctions.MARGINS.bottom]).domain([d3.min(graphFunctions.allData, function(d) {
       minVals = [];
       priceTypes.forEach(function (priceOption) {
         minVals.push(d[priceOption]);
       })
-
       var min = Math.min(...minVals);
 
       return min;
@@ -84,7 +57,6 @@ graphFunctions = {
       priceTypes.forEach(function (priceOption) {
         maxVals.push(d[priceOption]);
       })
-
       var max = Math.max(...maxVals);
 
       return max;
@@ -94,9 +66,6 @@ graphFunctions = {
   },
 
   drawYaxis: function (yRange) {
-    // remove curent lines
-    // look at which checkboxes are selected
-    // paint each line for each price type selected
 
     vis = d3.select('#graph');
 
@@ -112,24 +81,10 @@ graphFunctions = {
       .call(yAxis);
   },
 
-  createYaxis: function () {
-    var yRange = graphFunctions.getYrange();
-    graphFunctions.drawYaxis(yRange);
-  },
-
-  createLines: function () {
+  createLines: function (yRange, priceTypes) {
     var lineColor;
-    var priceTypes = [];
 
     vis.selectAll(".line").remove();
-
-    $('.graph_options input').each(function (index, input) {
-      if(input.checked){
-        priceTypes.push(input.value);
-      }
-    })
-
-    var yRange = graphFunctions.getYrange();
 
     priceTypes.forEach(function (priceOption) {
       var lineGen = d3.line()
@@ -156,6 +111,23 @@ graphFunctions = {
         .attr('fill', 'none');
     })
 
+  },
+
+  updateGraph: function () {
+    var priceTypes = graphFunctions.getPriceTypes();
+    var yRange = graphFunctions.getYrange(priceTypes);
+    graphFunctions.drawYaxis(yRange);
+    graphFunctions.createLines(yRange, priceTypes);
+  },
+
+  getPriceTypes: function () {
+    var priceTypes = [];
+    $('.graph_options input').each(function (index, input) {
+      if(input.checked){
+        priceTypes.push(input.value);
+      }
+    })
+    return priceTypes;
   }
 
 }
@@ -165,8 +137,7 @@ $(document).ready(function() {
   graphFunctions.init();
 
   $(document).on('click', '.graph_options input', function () {
-    graphFunctions.createYaxis();
-    graphFunctions.createLines();
+    graphFunctions.updateGraph();
   });
 
 })
