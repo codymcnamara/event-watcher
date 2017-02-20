@@ -10,4 +10,8 @@ class EventsController < ApplicationController
     end
   end
 
+  def index
+
+  end
+
 end
