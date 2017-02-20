@@ -35,6 +35,8 @@ gem 'whenever', require: false
 # gem 'capistrano-rails', group: :development
 
 
+gem 'rake', '11.3.0'
+
 gem 'figaro'
 gem 'puma'
 group :development do
