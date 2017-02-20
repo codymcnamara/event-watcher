@@ -191,7 +191,6 @@ DEPENDENCIES
   pg
   puma
   rails (= 4.2.0.rc1)
-  rake (= 11.3.0)
   sass-rails (~> 4.0)
   sdoc (~> 0.4.0)
   spring
