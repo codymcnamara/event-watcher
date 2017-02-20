@@ -49,7 +49,7 @@ graphFunctions = {
       priceTypes.forEach(function (priceOption) {
         minVals.push(d[priceOption]);
       })
-      var min = Math.min(...minVals);
+      var min = Math.min.apply(null, minVals);
 
       return min;
     }), d3.max(graphFunctions.allData, function(d) {
@@ -57,8 +57,10 @@ graphFunctions = {
       priceTypes.forEach(function (priceOption) {
         maxVals.push(d[priceOption]);
       })
-      var max = Math.max(...maxVals);
-
+      // var max = function(maxVals){
+      //   return Math.max.apply(null, maxVals)
+      // }
+      var max = Math.max.apply(null, maxVals);
       return max;
     })]);
 
