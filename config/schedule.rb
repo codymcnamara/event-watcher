@@ -4,7 +4,7 @@
 # http://en.wikipedia.org/wiki/Cron
 
 
-every 2.minutes do
+every 1.days do
   rake 'track_price_changes'
 end
 

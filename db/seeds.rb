@@ -10,7 +10,7 @@
 
 # Event.create(seatgeek_id: "3558422", title: "Coldplay", finished: false, date: "2017-10-05T02:00:00")
 
-if rails.env = 'development'
+# if rails.env = 'development'
   listing_count = 1000
   average_price = 100
   lowest_price = 80
@@ -29,4 +29,9 @@ if rails.env = 'development'
 
   end
 
-elsif rails.env = "production"
+# elsif rails.env = "production"
+#
+#
+#
+#
+# end

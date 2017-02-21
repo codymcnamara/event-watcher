@@ -27,8 +27,8 @@ graphFunctions = {
     graphFunctions.xRange = d3.scaleTime()
       .range([graphFunctions.MARGINS.left, graphFunctions.WIDTH - graphFunctions.MARGINS.right])
       .domain([
-        new Date( Date.parse(graphFunctions.allData[0].date) ),
-        new Date( Date.parse(graphFunctions.allData[graphFunctions.allData.length - 1].date) )
+        new Date( Date.parse(graphFunctions.allData[0].created_at) ),
+        new Date( Date.parse(graphFunctions.allData[graphFunctions.allData.length - 1].created_at) )
       ])
 
     var xAxis = d3.axisBottom(graphFunctions.xRange)
@@ -91,7 +91,7 @@ graphFunctions = {
     priceTypes.forEach(function (priceOption) {
       var lineGen = d3.line()
         .x(function(d) {
-          return graphFunctions.xRange(new Date (Date.parse(d.date) ) );
+          return graphFunctions.xRange(new Date (Date.parse(d.created_at) ) );
         })
         .y(function(d) {
           return yRange(d[priceOption]);
