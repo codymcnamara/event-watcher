@@ -57,10 +57,8 @@ graphFunctions = {
       priceTypes.forEach(function (priceOption) {
         maxVals.push(d[priceOption]);
       })
-      // var max = function(maxVals){
-      //   return Math.max.apply(null, maxVals)
-      // }
       var max = Math.max.apply(null, maxVals);
+
       return max;
     })]);
 
