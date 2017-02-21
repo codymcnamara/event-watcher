@@ -64,7 +64,13 @@ graphFunctions = {
       return max;
     })]);
 
+    // create a range if all y values are the same
+    if (yRange.domain()[0] == yRange.domain()[1]){
+      yRange.domain([yRange.domain()[0] - 20], yRange.domain()[1] + 20)
+    }
+
     return yRange;
+
   },
 
   drawYaxis: function (yRange) {
