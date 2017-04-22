@@ -33,7 +33,7 @@ graphFunctions = {
 
 
     var xAxis = d3.axisBottom(graphFunctions.xRange)
-      .ticks( Math.min(20, (graphFunctions.allData.length - 1)) )
+      .ticks( Math.min(5, (graphFunctions.allData.length - 1)) )
       .tickFormat(d3.timeFormat("%b-%d"));
 
     vis.append('svg:g')
