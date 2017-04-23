@@ -1,18 +1,43 @@
 <div class="container-fluid">
   <h1><%= @event.title %></h1>
-  <h3>Date of performance: <%= @event.date %></h3>
-  <h3>Location: <%= @event.venue_location %></h3>
-  <h3>Venue name: <%= @event.venue_name %></h3>
-
-
-  <div class="graph_options">
-    <input type="checkbox" name="low" value="lowest_price" checked>
-    <label for="low">Lowest Price</label>
-    <input type="checkbox" name="ave" value="average_price" checked>
-    <label for="ave">Average Price</label>
-    <input type="checkbox" name="high" value="highest_price">
-    <label for="high">Highest Price</label>
+  <div class="">
+    Show information
   </div>
+  <ul>
+    <li>Date of performance: <%= @event.date %></li>
+    <li>Location: <%= @event.venue_location %></li>
+    <li>Venue name: <%= @event.venue_name %></li>
+  </ul>
+
+
+<div class="graph_options_wrapper">
+  <div class="graph_options">
+    <div class="graph_instructions">
+      Click which price points you'd like to see:
+    </div>
+    <div class="">
+      <div class="">
+        <label for="low">
+          <input type="checkbox" name="low" id="low" value="lowest_price" checked>
+Lowest Price</label>
+        <span class="low_color key_line"></span>
+      </div>
+      <div class="">
+        <input type="checkbox" name="ave" id="ave" value="average_price" checked>
+        <label for="ave">Average Price</label>
+        <span class="ave_color key_line"></span>
+      </div>
+      <div class="">
+        <input type="checkbox" name="high" id="high" value="highest_price">
+        <label for="high">Highest Price</label>
+        <span class="high_color key_line"></span>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
   <svg id="graph" width="1000" height="500"></svg>
 
   <%= javascript_include_tag 'graph' %>

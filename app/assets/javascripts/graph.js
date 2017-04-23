@@ -103,14 +103,14 @@ graphFunctions = {
         });
 
         if(priceOption == 'lowest_price'){
-          // purple
-          lineColor = '#9b59b6';
+          // green
+          lineColor = '#2ecc71';
         } else if (priceOption == 'highest_price') {
           // red
           lineColor = '#e74c3c';
         } else {
-          // green
-          lineColor = '#2ecc71';
+          // purple
+          lineColor = '#9b59b6';
         }
 
       vis.append('svg:path')
