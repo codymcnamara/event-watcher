@@ -34,7 +34,7 @@ graphFunctions = {
 
     var xAxis = d3.axisBottom(graphFunctions.xRange)
       .ticks( Math.min(5, (graphFunctions.allData.length - 1)) )
-      .tickFormat(d3.timeFormat("%b-%d"));
+      // .tickFormat(d3.timeFormat("%b-%d"));
 
     vis.append('svg:g')
       .attr('class', 'x axis')
@@ -103,18 +103,21 @@ graphFunctions = {
         });
 
         if(priceOption == 'lowest_price'){
-          lineColor = 'green';
+          // purple
+          lineColor = '#9b59b6';
         } else if (priceOption == 'highest_price') {
-          lineColor = 'blue';
+          // red
+          lineColor = '#e74c3c';
         } else {
-          lineColor = 'red';
+          // green
+          lineColor = '#2ecc71';
         }
 
       vis.append('svg:path')
         .attr('class', 'line')
         .attr('d', lineGen(graphFunctions.allData))
         .attr('stroke', lineColor)
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 3)
         .attr('fill', 'none');
     })
 

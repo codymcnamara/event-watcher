@@ -1,17 +1,20 @@
-<h1><%= @event.title %></h1>
-<h3>Date of performance: <%= @event.date %></h3>
-<h3>Location: <%= @event.venue_location %></h3>
-<h3>Venue name: <%= @event.venue_name %></h3>
+<div class="container-fluid">
+  <h1><%= @event.title %></h1>
+  <h3>Date of performance: <%= @event.date %></h3>
+  <h3>Location: <%= @event.venue_location %></h3>
+  <h3>Venue name: <%= @event.venue_name %></h3>
 
 
-<div class="graph_options">
-  <input type="checkbox" name="low" value="lowest_price" checked>
-  <label for="low">Lowest Price</label>
-  <input type="checkbox" name="ave" value="average_price" checked>
-  <label for="ave">Average Price</label>
-  <input type="checkbox" name="high" value="highest_price">
-  <label for="high">Highest Price</label>
+  <div class="graph_options">
+    <input type="checkbox" name="low" value="lowest_price" checked>
+    <label for="low">Lowest Price</label>
+    <input type="checkbox" name="ave" value="average_price" checked>
+    <label for="ave">Average Price</label>
+    <input type="checkbox" name="high" value="highest_price">
+    <label for="high">Highest Price</label>
+  </div>
+  <svg id="graph" width="1000" height="500"></svg>
+
+  <%= javascript_include_tag 'graph' %>
+
 </div>
-<svg id="graph" width="1000" height="500"></svg>
-
-<%= javascript_include_tag 'graph' %>

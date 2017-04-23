@@ -1,9 +1,11 @@
-<h1>Add a new Event to track</h1>
+<div class="container-fluid">
+  <h1>Add a new Event to track</h1>
 
-<%= form_tag(controller: "events", action: "create") do %>
+  <%= form_tag(controller: "events", action: "create") do %>
 
   <%= label_tag('event[url]', "Enter the seatgeek url of a concert you'd like to track") %>
   <%= text_field_tag('event[url]') %>
   <%= submit_tag("Create") %>
 
-<% end %>
+  <% end %>
+</div>
