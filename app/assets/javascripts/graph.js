@@ -74,24 +74,36 @@ graphFunctions = {
 
   drawYaxis: function (yRange) {
 
-    vis = d3.select('#graph');
+    var vis = d3.select('#graph');
 
     var yAxis = d3.axisLeft()
       .scale(yRange)
       .tickSize(5);
 
-    vis.selectAll(".y.axis").remove();
+    if(d3.selectAll(".y.axis").empty() ){
+      vis.append('svg:g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(' + (graphFunctions.MARGINS.left) + ',0)')
+        .call(yAxis);
+    } else {
+      d3.selectAll(".y.axis").transition().duration(1500).call(yAxis);
+    }
 
-    vis.append('svg:g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(' + (graphFunctions.MARGINS.left) + ',0)')
-      .call(yAxis);
   },
 
   createLines: function (yRange, priceTypes) {
     var lineColor;
+    var vis = d3.select('#graph');
 
-    vis.selectAll(".line").remove();
+    // remove undesired lines
+    $('.graph_options input').each(function (index, input) {
+      if(!input.checked){
+        d3.select('.' + input.value).transition()
+          .duration(1500)
+          .attr('stroke', '#FFFFFF')
+          .remove();
+      }
+    })
 
     priceTypes.forEach(function (priceOption) {
       var lineGen = d3.line()
@@ -113,14 +125,21 @@ graphFunctions = {
           lineColor = '#9b59b6';
         }
 
-      vis.append('svg:path')
-        .attr('class', 'line')
-        .attr('d', lineGen(graphFunctions.allData))
-        .attr('stroke', lineColor)
-        .attr('stroke-width', 3)
-        .attr('fill', 'none');
+      if(vis.select('.' + priceOption).size() > 0){
+          var line = vis.select('.' + priceOption);
+          line.transition().duration(1500)
+            .attr('stroke', lineColor)
+            .attr('d', lineGen(graphFunctions.allData));
+      }else{
+        vis.append('svg:path')
+          .transition().duration(1500)
+          .attr('class', 'line ' + priceOption)
+          .attr('d', lineGen(graphFunctions.allData))
+          .attr('stroke', lineColor)
+          .attr('stroke-width', 3)
+          .attr('fill', 'none');
+      }
     })
-
   },
 
   updateGraph: function () {
