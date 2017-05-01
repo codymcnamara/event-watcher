@@ -94,7 +94,6 @@ graphFunctions = {
   createLines: function (yRange, priceTypes) {
     var lineColor;
     var vis = d3.select('#graph');
-
     // remove undesired lines
     $('.graph_options input').each(function (index, input) {
       if(!input.checked){
@@ -129,7 +128,9 @@ graphFunctions = {
           var line = vis.select('.' + priceOption);
           line.transition().duration(1500)
             .attr('stroke', lineColor)
-            .attr('d', lineGen(graphFunctions.allData));
+            .attr('d', lineGen(graphFunctions.allData))
+            .attr('stroke-width', 3)
+            .attr('fill', 'none');
       }else{
         vis.append('svg:path')
           .transition().duration(1500)
@@ -140,6 +141,7 @@ graphFunctions = {
           .attr('fill', 'none');
       }
     })
+
   },
 
   updateGraph: function () {
