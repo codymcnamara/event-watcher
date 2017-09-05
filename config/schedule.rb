@@ -3,6 +3,7 @@
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
 
+set :output, {:error => Whenever.path + '/log/cron_error.log', :standard => Whenever.path + '/log/cron_standard.log'}
 
 every 1.days do
   rake 'track_price_changes'
