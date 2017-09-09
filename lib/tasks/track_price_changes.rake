@@ -9,11 +9,11 @@ task track_price_changes: :environment do
     raw_body = Net::HTTP.get_response(uri).body
     response = JSON.parse(raw_body)
 
-    if response['archived']
+    if response['archived'] ||  (response['code'] && response['code'] == 404)
       event.update(finished: true)
       next
     end
-
+    
     Day.create(
       event_id: event.id,
       listing_count: response['stats']['listing_count'],
