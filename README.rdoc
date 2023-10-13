@@ -1,5 +1,8 @@
-An web app that tracks and displays event prices
+A Rails app that tracks and displays event prices
 
 - Runs background jobs using crontab to regularly hit the SeatGeek API and collect ticket sale information
-- Displays interactive, graphic representation of ticket pricing using D3.js
-- Hosted on an Amazon Web Services e3 instance
+- Displays interactive, graphical representation of ticket pricing using D3.js
+- Uses PostgreSQL database  
+
+Screenshot of interactive graph from when it was still running:
+https://raw.githubusercontent.com/codymcnamara/Portfolio/master/images/eventwatcher.png
